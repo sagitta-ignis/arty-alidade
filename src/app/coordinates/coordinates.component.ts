@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
+import { MatDialog, MatSnackBar } from '@angular/material';
 
 import { field, Role, Spotter, Target, Artillery, spotters, targets, artilleries, ArtilleryType } from '../../assets/prototype-data';
+import { SpotterDialogComponent } from '../positionables/spotter-dialog/spotter-dialog.component';
 
 @Component({
   selector: 'ali-coordinates',
@@ -30,7 +32,7 @@ export class CoordinatesComponent {
 
   public currentSpotter: Spotter;
 
-  constructor() {
+  constructor(private dialog: MatDialog, private snackBar: MatSnackBar) {
 
   }
 
@@ -40,6 +42,30 @@ export class CoordinatesComponent {
 
   public openPositionableDialog(role: Role) {
 
+    let positionableDialog;
+    let positionable;
+    switch (role) {
+      case Role.Spotter:
+        positionableDialog = SpotterDialogComponent;
+        positionable = { name: '' };
+        break;
+    }
+
+    if (!positionableDialog) { return; }
+
+    const dialogRef = this.dialog.open(positionableDialog, {
+      width: '250px',
+      data: positionable
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (!result) { return; }
+      switch (role) {
+        case Role.Spotter:
+          this.addSpotter(result.name);
+          break;
+      }
+    });
   }
 
   private addTarget(name: string, movable?: boolean) {
@@ -58,5 +84,10 @@ export class CoordinatesComponent {
     if (!name) { return; }
     const id = this.spotters.sort((a, b) => a.id - b.id)[0] + 1;
     this.spotters.push(new Spotter(id, name));
+
+    this.snackBar.open(`Added ${name} as a spotter`, null, {
+      horizontalPosition: 'center',
+      duration: 2000,
+    });
   }
 }

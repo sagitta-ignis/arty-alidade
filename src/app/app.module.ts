@@ -10,6 +10,7 @@ import {
 } from '@angular/material';
 
 import { AppComponent } from './app.component';
+import { PositionablesModule } from './positionables/positionables.module';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,9 @@ import { AppComponent } from './app.component';
 
     MatToolbarModule,
     MatIconModule,
-    MatButtonModule
+    MatButtonModule,
+
+    PositionablesModule
   ],
   providers: [],
   bootstrap: [AppComponent]

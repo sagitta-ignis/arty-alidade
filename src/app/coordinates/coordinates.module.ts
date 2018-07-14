@@ -14,7 +14,8 @@ import {
   MatInputModule,
   MatSlideToggleModule,
   MatSelectModule,
-  MatButtonModule
+  MatButtonModule,
+  MatSnackBarModule
 } from '@angular/material';
 
 import { CoordinatesComponent } from './coordinates.component';
@@ -43,7 +44,9 @@ import { CoordinatesComponent } from './coordinates.component';
     MatFormFieldModule,
     MatInputModule,
     MatSlideToggleModule,
-    MatSelectModule
+    MatSelectModule,
+
+    MatSnackBarModule
   ],
   declarations: [CoordinatesComponent]
 })

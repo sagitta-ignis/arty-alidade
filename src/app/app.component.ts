@@ -1,7 +1,5 @@
-import { Component, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnDestroy, ChangeDetectorRef, HostBinding } from '@angular/core';
 import {MediaMatcher} from '@angular/cdk/layout';
-
-import { field, Spotter, Target, Artillery, spotters, targets, artilleries } from '../assets/prototype-data';
 
 @Component({
   selector: 'ali-root',
@@ -10,39 +8,25 @@ import { field, Spotter, Target, Artillery, spotters, targets, artilleries } fro
 })
 export class AppComponent implements OnDestroy {
 
-  public get targets() {
-    return targets;
-    // return Array.from(field.values()).filter(p => p instanceof Target).map(p => p as Target);
-  }
-
-  public get spotters() {
-    return spotters;
-    // return Array.from(field.values()).filter(p => p instanceof Spotter).map(p => p as Spotter);
-  }
-
-  public get artilleries() {
-    return artilleries;
-    // return Array.from(field.values()).filter(p => p instanceof Artillery).map(p => p as Artillery);
-  }
-
-  public artilleryTypes = [
-    'Mortar',
-    'FieldArtillery',
-    'Gunboat',
-    'Tank',
-    'Howitzer'
-  ];
-
-  public currentSpotter: Spotter = spotters[0];
-
   mobileQuery: MediaQueryList;
 
   private _mobileQueryListener: () => void;
+  @HostBinding('class.sidenav-top-container') private _classSidenavTopContainer = true;
+  @HostBinding('class.is-mobile') private _classIsMobile;
 
   constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
-    this._mobileQueryListener = () => changeDetectorRef.detectChanges();
+    this.onMediaChange();
+
+    this._mobileQueryListener = () => {
+      this.onMediaChange();
+      changeDetectorRef.detectChanges();
+    };
     this.mobileQuery.addListener(this._mobileQueryListener);
+  }
+
+  private onMediaChange() {
+    this._classIsMobile = this.mobileQuery.matches;
   }
 
   ngOnDestroy(): void {

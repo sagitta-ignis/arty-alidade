@@ -1,22 +1,12 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
 import {
   MatIconModule,
-  MatButtonModule,
-
   MatToolbarModule,
-  MatSidenavModule,
-  MatMenuModule,
-  MatListModule,
-  MatTabsModule,
-  MatExpansionModule,
-  MatFormFieldModule,
-  MatInputModule,
-  MatSlideToggleModule,
-  MatSelectModule,
-  MatBadgeModule
+  MatButtonModule,
 } from '@angular/material';
 
 import { AppComponent } from './app.component';
@@ -29,22 +19,19 @@ import { AppComponent } from './app.component';
     BrowserModule,
     BrowserAnimationsModule,
 
-    MatIconModule,
-    MatButtonModule,
+    RouterModule.forRoot([
+      {
+        path: 'coordinates',
+        loadChildren: './coordinates/coordinates.module#CoordinatesModule'
+      },
+      {
+        path: '**', redirectTo: 'coordinates', pathMatch: 'full'
+      }
+    ]),
 
     MatToolbarModule,
-    MatSidenavModule,
-    MatMenuModule,
-    MatListModule,
-
-    MatTabsModule,
-    MatExpansionModule,
-    MatBadgeModule,
-
-    MatFormFieldModule,
-    MatInputModule,
-    MatSlideToggleModule,
-    MatSelectModule
+    MatIconModule,
+    MatButtonModule
   ],
   providers: [],
   bootstrap: [AppComponent]

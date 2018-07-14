@@ -1,0 +1,113 @@
+<mat-sidenav-container class="sidenav-container">
+  <!-- Sidenav -->
+  <mat-sidenav #snav opened="true" mode="side">
+    <!-- List of position (Spotter only) -->
+    <mat-nav-list>
+      <h3 mat-subheader>Spotters</h3>
+      <mat-divider></mat-divider>
+      <a mat-list-item *ngFor="let spotter of spotters" (click)="selectSpotter(spotter); snav.close();">{{ spotter.name }}</a>
+      <a mat-list-item (click)="openPositionableDialog(Role.Spotter)">
+        <mat-icon>add</mat-icon> Add </a>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <!-- Main content -->
+  <mat-sidenav-content>
+    <!-- selects second tab (Target) by default -->
+    <mat-tab-group selectedIndex="1">
+
+      <!-- Fake tab : tab header will toggle sidenav for list of spotters -->
+      <mat-tab *ngIf="!snav.opened" disabled [style.flex]="'1'">
+        <ng-template mat-tab-label>
+          <button mat-button color="primary" class="filling" (click)="snav.toggle()">
+            {{ currentSpotter.name }}
+          </button>
+        </ng-template>
+      </mat-tab>
+
+      <!-- Tabs for separating positionables by role -->
+      <mat-tab *ngFor="let tab of tabs" [label]="tab.label">
+
+        <!-- Add position to the list -->
+        <mat-toolbar class="actions-toolbar">
+          <button mat-button (click)="openPositionableDialog(tab.data.role)">
+            <mat-icon>add</mat-icon> Add
+          </button>
+        </mat-toolbar>
+
+        <!-- List of position (Target or Artillery) -->
+        <mat-accordion multi="true">
+
+          <ng-container *ngFor="let position of tab.data.positionables" [ngSwitch]="position.role">
+
+            <!-- ListItem for Target -->
+            <mat-expansion-panel *ngSwitchCase="Role.Target">
+              <mat-expansion-panel-header>
+                <mat-panel-title>{{ position.name }}</mat-panel-title>
+                <mat-panel-description>
+                  {{ position.movable ? 'Movable' : 'Unmovable' }} target
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+
+              <mat-form-field>
+                <input matInput placeholder="Azimuth">
+              </mat-form-field>
+
+              <mat-form-field>
+                <input matInput placeholder="Distance">
+              </mat-form-field>
+
+              <mat-slide-toggle [checked]="position.movable" (change)="position.movable = $event.checked">
+                {{ position.movable ? 'Movable' : 'Unmovable' }}
+              </mat-slide-toggle>
+
+              <mat-action-row>
+                <button mat-icon-button color="warn">
+                  <mat-icon aria-label="delete">delete</mat-icon>
+                </button>
+              </mat-action-row>
+            </mat-expansion-panel>
+
+            <!-- ListItem for Artillery -->
+            <mat-expansion-panel *ngSwitchCase="Role.Artillery">
+              <mat-expansion-panel-header>
+                <mat-panel-title>{{ position.name }}</mat-panel-title>
+                <mat-panel-description>
+                  {{ position.type }}
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+
+              <mat-form-field>
+                <input matInput placeholder="Azimuth">
+              </mat-form-field>
+
+              <mat-form-field>
+                <input matInput placeholder="Distance">
+              </mat-form-field>
+
+              <mat-form-field>
+                <mat-select placeholder="Type" [(value)]="position.type">
+                  <mat-option *ngFor="let artilleryType of artilleryTypes" [value]="artilleryType">
+                    {{ artilleryType }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-action-row>
+                <button mat-icon-button color="warn">
+                  <mat-icon aria-label="delete">delete</mat-icon>
+                </button>
+              </mat-action-row>
+            </mat-expansion-panel>
+
+          </ng-container>
+
+        </mat-accordion>
+
+      </mat-tab>
+
+
+    </mat-tab-group>
+
+  </mat-sidenav-content>
+</mat-sidenav-container>

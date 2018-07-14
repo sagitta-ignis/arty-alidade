@@ -88,6 +88,7 @@ addToField(new Spotter(1, 'Boumboum'));
 
 addToField(new Target(1, 'Saltbrook', false));
 addToField(new Target(2, 'Tank #1', true));
+addToField(new Target(3, 'Half-track #1', true));
 
 addToField(new Artillery(1, 'Krou', ArtilleryType.FieldArtillery, 13));
 addToField(new Artillery(2, 'Padaone', ArtilleryType.Mortar, 3));

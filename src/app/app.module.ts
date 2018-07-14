@@ -26,6 +26,10 @@ import { PositionablesModule } from './positionables/positionables.module';
         loadChildren: './coordinates/coordinates.module#CoordinatesModule'
       },
       {
+        path: 'field',
+        loadChildren: './field/field.module#FieldModule'
+      },
+      {
         path: '**', redirectTo: 'coordinates', pathMatch: 'full'
       }
     ]),
